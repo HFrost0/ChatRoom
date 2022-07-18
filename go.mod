@@ -1,3 +1,3 @@
-module server_test
+module ChetRoom
 
 go 1.18

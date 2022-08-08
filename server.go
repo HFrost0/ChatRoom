@@ -28,11 +28,11 @@ func NewServer(ip string, port int) *Server {
 func (this *Server) Broadcast() {
 	for {
 		msg := <-this.Message
-		this.mapLock.Lock()
+		this.mapLock.RLock()
 		for _, cli := range this.OnlineMap {
 			cli.C <- msg
 		}
-		this.mapLock.Unlock()
+		this.mapLock.RUnlock()
 	}
 }
 
@@ -100,7 +100,7 @@ func (this *Server) Handler(conn net.Conn) {
 		case <-done:
 			return
 		case <-isLive:
-		case <-time.After(time.Second * 5):
+		case <-time.After(time.Second * 60):
 			//user.C <- "由于长时间未活动，你已被强制下线\n"  这样不行，因为已经退出
 			user.conn.Write([]byte("由于长时间未活动，你已被强制下线\n"))
 			return

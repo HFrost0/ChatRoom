@@ -1,4 +1,4 @@
-package main
+package ChatRoom
 
 import "net"
 
@@ -19,9 +19,9 @@ func NewUser(conn net.Conn) *User {
 	return user
 }
 
-func (this *User) ListenMessage() {
+func (user *User) ListenMessage() {
 	for {
-		msg := <-this.C
-		this.conn.Write([]byte(msg))
+		msg := <-user.C
+		user.conn.Write([]byte(msg))
 	}
 }
